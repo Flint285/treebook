@@ -3,3 +3,10 @@ tate:
   last_name: "Rathje"
   email: "Flint285@gmail.com"
   profile_name: "Flint285"
+
+bill:
+  first_name: "Bill"
+  last_name: "Jones"
+  email: "Bill@gmail.com"
+  profile_name: "Billjones"
+
