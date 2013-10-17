@@ -10,3 +10,9 @@ bill:
   email: "Bill@gmail.com"
   profile_name: "Billjones"
 
+mike:
+  first_name: "Mike"
+  last_name: "The Frog"
+  email: "mike@teamtreehouse.com"
+  profile_name: "mikethefrog"
+
