@@ -7,4 +7,10 @@ class Status < ActiveRecord::Base
   					  length: { minimum: 2 }
 
   validates :user_id, presence: true
+
+  after_save :help_requests
+
+  def help_requests
+  	TestRun.help_request( id ).deliver
+  end 
 end

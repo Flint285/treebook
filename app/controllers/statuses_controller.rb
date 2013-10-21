@@ -1,6 +1,11 @@
 class StatusesController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :edit, :update]
 
+  def help_request
+    TestRun.help_request( params[:id] ).deliver
+    redirect_to statuses_url
+  end
+
   # GET /statuses
   # GET /statuses.json
   def index

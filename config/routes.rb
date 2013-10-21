@@ -9,6 +9,10 @@ Treebook::Application.routes.draw do
     get 'logout', to: 'devise/sessions#destroy', as: :logout
   end
 
+  get "helprequest/ :id(.:format)" => "statuses#help_request", :as => "help_request"
+
+  resources :user_friendships
+
   resources :statuses
   get 'feed', to: 'statuses#index', as: :feed
   root to: 'statuses#index'
