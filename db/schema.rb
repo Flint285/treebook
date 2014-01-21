@@ -11,24 +11,93 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131013110546) do
+ActiveRecord::Schema.define(:version => 20140118101333) do
+
+  create_table "albums", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "albums", ["user_id"], :name => "index_albums_on_user_id"
+
+  create_table "documents", :force => true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+    t.string   "attachment_file_name"
+    t.string   "attachment_content_type"
+    t.integer  "attachment_file_size"
+    t.datetime "attachment_updated_at"
+  end
+
+  add_index "documents", ["user_id"], :name => "index_documents_on_user_id"
+
+  create_table "pictures", :force => true do |t|
+    t.integer  "album_id"
+    t.integer  "user_id"
+    t.string   "caption"
+    t.text     "description"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+    t.string   "asset_file_name"
+    t.string   "asset_content_type"
+    t.integer  "asset_file_size"
+    t.datetime "asset_updated_at"
+  end
+
+  add_index "pictures", ["album_id"], :name => "index_pictures_on_album_id"
+  add_index "pictures", ["user_id"], :name => "index_pictures_on_user_id"
+
+  create_table "skills", :force => true do |t|
+    t.string   "title"
+    t.string   "level"
+    t.integer  "rating"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "skills_statuses", :id => false, :force => true do |t|
+    t.integer "skill_id"
+    t.integer "status_id"
+  end
+
+  add_index "skills_statuses", ["skill_id", "status_id"], :name => "index_skills_statuses_on_skill_id_and_status_id"
+
+  create_table "skills_users", :id => false, :force => true do |t|
+    t.integer "skill_id"
+    t.integer "user_id"
+  end
+
+  add_index "skills_users", ["skill_id", "user_id"], :name => "index_skills_users_on_skill_id_and_user_id"
 
   create_table "statuses", :force => true do |t|
     t.text     "content"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.integer  "user_id"
+    t.integer  "document_id"
   end
 
   add_index "statuses", ["user_id"], :name => "index_statuses_on_user_id"
+
+  create_table "statuses_skills", :id => false, :force => true do |t|
+    t.integer "skill_id"
+    t.integer "status_id"
+  end
+
+  add_index "statuses_skills", ["skill_id", "status_id"], :name => "index_statuses_skills_on_skill_id_and_status_id"
 
   create_table "user_friendships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "friend_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "state"
   end
 
+  add_index "user_friendships", ["state"], :name => "index_user_friendships_on_state"
   add_index "user_friendships", ["user_id", "friend_id"], :name => "index_user_friendships_on_user_id_and_friend_id"
 
   create_table "users", :force => true do |t|
@@ -47,6 +116,10 @@ ActiveRecord::Schema.define(:version => 20131013110546) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

@@ -3,6 +3,7 @@ tate:
   last_name: "Rathje"
   email: "Flint285@gmail.com"
   profile_name: "Flint285"
+  encrypted_password: $2a$10$Fh/Hm8RxDsuPTeBUr6864.GARlcmt7zF2WspaXGr3BIv2C27N.osq
 
 bill:
   first_name: "Bill"
@@ -16,3 +17,8 @@ mike:
   email: "mike@teamtreehouse.com"
   profile_name: "mikethefrog"
 
+blocked_friend:
+  first_name: 'Blocked'
+  last_name: 'Friend'
+  email: 'blocked@teamtreehouse.com'
+  profile_name: 'youblockedme'

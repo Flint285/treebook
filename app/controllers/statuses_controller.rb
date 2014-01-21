@@ -3,13 +3,13 @@ class StatusesController < ApplicationController
 
   def help_request
     TestRun.help_request( params[:id] ).deliver
-    redirect_to statuses_url
+    redirect_to statuses_url 
   end
 
   # GET /statuses
   # GET /statuses.json
   def index
-    @statuses = Status.all
+    @statuses = Status.order('created_at desc').all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -31,8 +31,34 @@ class StatusesController < ApplicationController
   # GET /statuses/new
   # GET /statuses/new.json
   def new
+    @status = current_user.statuses.new
+    @status.build_document
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @status }
+    end
+  end
+
+  def new_car
     @status = Status.new
 
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @status }
+    end
+  end
+
+  def new_computer
+    @status = Status.new
+    if @status 
+    users = User.all
+      users.each do |user|
+        if user.skills.find_by_title( "Computer" )  
+          TestRun.help_request( id, user ).deliver
+        end
+      end
+    end
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @status }
@@ -64,11 +90,13 @@ class StatusesController < ApplicationController
   # PUT /statuses/1.json
   def update
     @status = current_user.statuses.find(params[:id])
+    @document = @status.document
     if params[:status] && params[:status].has_key?(:user_id)
       params[:status].delete(:user_id)
     end 
     respond_to do |format|
-      if @status.update_attributes(params[:status])
+      if @status.update_attributes(params[:status]) &&
+        @document && @document.update_attributes(params[:status][:document_attributes])
         format.html { redirect_to @status, notice: 'Status was successfully updated.' }
         format.json { head :no_content }
       else

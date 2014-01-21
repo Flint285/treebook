@@ -1,4 +1,16 @@
+<%= simple_form_for(@status, html: {class: "form-horizontal"}) do |f| %>
+
 <p id="notice"><%= notice %></p>
+
+<%= @status.skills.each do |skill| %>
+   <hr>
+   <div></div><b>Help Request Type: <%= skill.title %></b><br/>
+   <% if skill.users.empty? %><br/>
+   Sweeeeet!
+   <% end %>
+   
+   <hr>    
+<% end %>
 
 <p>
   <b>Name:</b>
@@ -10,6 +22,19 @@
   <%= @status.content %>
 </p>
 
+<hr />
+
+<% if @status.document && @status.document.attachment? %>
+  <%= status_document_link @status %>
+  <hr />
+<% end %>
+
 
 <%= link_to 'Edit', edit_status_path(@status) %> |
 <%= link_to 'Back', statuses_path %>
+
+
+  <h1><%#= skill.title %> </h1>
+
+<% end %>
+<%= show_params %>

@@ -1,0 +1,53 @@
+<h1>Listing skills</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Level</th>
+    <th>Rating</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @skills.each do |skill| %>
+  <tr>
+    <td><%= skill.title %></td>
+    <td><%= skill.level %></td>
+    <td><%= skill.rating %></td>
+    <td><%= link_to 'Show', skill %></td>
+    <td><%= link_to 'Edit', edit_skill_path(skill) %></td>
+    <td><%= link_to 'Destroy', skill, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Skill', new_skill_path %>
+
+<%= @skills.each do |skill| %>
+  <h1><%= skill.title %> </h1>
+<% end %>
+
+<%= show_params %>
+
+<div> <h2>All Users Skills<h2> </div>
+
+
+<%= @skills.each do |skill| %>
+   <hr>
+   <div></div><b><%= skill.title %></b><br/>
+   <%= skill.level %><br/>
+   <%= skill.rating %><br/>
+   <%= skill.users %><br/>
+   <%  if skill.users.size > 1 %><br/>
+   Sweeeeet!
+   <% end %>
+   <hr>    
+<% end %>
+
+
+
+<%= show_params %>
+

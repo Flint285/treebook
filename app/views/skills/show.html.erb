@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @skill.title %>
+</p>
+
+<p>
+  <b>Level:</b>
+  <%= @skill.level %>
+</p>
+
+<p>
+  <b>Rating:</b>
+  <%= @skill.rating %>
+</p>
+
+
+<%= link_to 'Edit', edit_skill_path(@skill) %> |
+<%= link_to 'Back', skills_path %>
+
+<%= show_params %>

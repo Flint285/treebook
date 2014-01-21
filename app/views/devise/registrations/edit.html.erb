@@ -1,11 +1,26 @@
-<h2>Edit <%= resource_name.to_s.humanize %></h2>
+<%= page_header do %>
+  <h2>Edit My Profile</h2>
+<% end %>
 
-<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+<%= simple_form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, class: 'form-forizontal ' }) do |f| %>
   <%= devise_error_messages! %>
 
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
+  <fieldset>
+    <legend>About Me</legend>
+    <%= f.input :first_name, input_html: { class: 'input-xxlarge' } %>
+    <%= f.input :last_name, input_html: { class: 'input-xxlarge' } %>
+    <%= f.input :email, input_html: { class: 'input-xxlarge' } %>
+  </fieldset>
 
+  <fieldset>
+    <legend>Profile Picture</legend>
+    <%= f.input :avatar, as: :file %>
+    <%= bootstrap_paperclip_picture f, :avatar %>   
+  </fieldset>
+  <br />
+
+  <fieldset>
+    <legend>Update Password</legend>
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
@@ -18,12 +33,33 @@
 
   <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
   <%= f.password_field :current_password %></div>
+  </fieldset>
+  <br />
 
-  <div><%= f.submit "Update" %></div>
+  <fieldset>
+  <div>
+  <legend>Skill Set</legend>
+  <%= f.collection_select :skill_ids, Skill.find(:all, :order => 'title'), :id, :title, {}, :multiple => true %>
+  </div>
+
+
+<div class="form-actions">
+  <%= f.submit "Update", class: 'btn btn-primary' %>
+  <%= link_to "Back", root_path, class: 'btn' %>
+  <%= link_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, class: 'btn btn-danger pull-right' %>
+</div>
+
+<% end %>
+</fieldset>
+
+<div> <h2>Skill Set<h2> </div>
+
+<%= @user.skills.each do |skill| %>
+   <hr>
+   <div></div><b><%= skill.title %></b><br/>
+   <%= skill.level %><br/>
+   <%= skill.rating %><br/>
+   <hr>    
 <% end %>
 
-<h3>Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete %></p>
-
-<%= link_to "Back", :back %>
+<%= show_params %>
