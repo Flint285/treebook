@@ -1,0 +1,34 @@
+[33mcommit 56c7eea17a6ddc1dba963000682933543f23b7b8[m
+Author: Tate Rathje <Flint285@gmail.com>
+Date:   Tue Oct 8 14:37:54 2013 -0700
+
+    Updated frontend for the new authentication system
+    
+    Added simple_form
+    Updated several forms to bootstrap/simple_form
+    Added login/logout/register/profile links to our nav
+    Added a collection select to our status form
+
+[33mcommit 961cf8240eff5b6901a96a00145ab1abd6b9e9ab[m
+Author: Tate Rathje <Taterathje@gmail.com>
+Date:   Mon Oct 7 14:31:05 2013 -0700
+
+    The latest code!
+
+[33mcommit 87d3d4cac7f05e1830cc321a1e126ee65460f55f[m
+Author: Tate Rathje <Taterathje@gmail.com>
+Date:   Fri Oct 4 03:08:51 2013 -0700
+
+    Install devise, add a user, and install devise views.
+
+[33mcommit 3b426849951200affa12ca11d588d6843c0c60f8[m
+Author: Tate Rathje <Flint285@gmail.com>
+Date:   Thu Oct 3 12:46:48 2013 -0700
+
+    Add bootstrap, and applied layoutto the page
+
+[33mcommit 7643e4c1846c7d55d28450d0d4ccb8cf4cdaa1fd[m
+Author: Tate Rathje <Flint285@gmail.com>
+Date:   Tue Oct 1 03:21:35 2013 -0700
+
+    Created a rails application and added   status updates

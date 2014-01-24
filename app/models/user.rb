@@ -76,6 +76,10 @@ class User < ActiveRecord::Base
     profile_name
   end
 
+  def to_s
+    first_name
+  end
+
   def gravatar_url
     stripped_email = email.strip
     downcased_email = stripped_email.downcase
