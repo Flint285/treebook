@@ -1,5 +1,8 @@
 class StatusesController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :edit, :update]
+  #before_filter :find_status
+
+  rescue_from ActiveModel::MassAssignmentSecurity::Error, with: :render_permission_error
 
   def help_request
     TestRun.help_request( params[:id] ).deliver
@@ -50,7 +53,7 @@ class StatusesController < ApplicationController
   end
 
   def new_computer
-    @status = Status.new
+    @status = current_user.statuses.new
     if @status 
     users = User.all
       users.each do |user|
@@ -91,18 +94,24 @@ class StatusesController < ApplicationController
   def update
     @status = current_user.statuses.find(params[:id])
     @document = @status.document
-    if params[:status] && params[:status].has_key?(:user_id)
-      params[:status].delete(:user_id)
-    end 
+
+    @status.transaction do
+      @status.update_attributes(params[:status])
+      @document.update_attributes(params[:status][:document]) if @document
+      raise ActiveRecord::Rollback unless @status.valid? && @document.try(:valid?) 
+    end
+    
     respond_to do |format|
-      if @status.update_attributes(params[:status]) &&
-        @document && @document.update_attributes(params[:status][:document_attributes])
         format.html { redirect_to @status, notice: 'Status was successfully updated.' }
         format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @status.errors, status: :unprocessable_entity }
+    end
+  rescue ActiveRecord::Rollback
+    respond_to do |format|
+      format.html do
+        flash.now[:error] = "Update failed."
+        render action: "edit"
       end
+      format.json { render json: @status.errors, status: :unprocessable_entity }
     end
   end
 
@@ -116,5 +125,10 @@ class StatusesController < ApplicationController
       format.html { redirect_to statuses_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def find_status
+    @status = current_user.statuses.find(params[:id])
   end
 end

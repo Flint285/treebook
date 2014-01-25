@@ -60,7 +60,7 @@ end
     sign_in users(:tate)
 
     assert_difference('Status.count') do
-      post :create, status: { content: @status.content, user_id: users(:bill).id }
+      post :create, status: { content: @status.content }
     end
 
     assert_redirected_to status_path(assigns(:status))
@@ -103,7 +103,7 @@ end
   test "should update status for the current user when logged in" do
     sign_in users(:tate)
     put :update, id: @status, status: { content: @status.content, user_id: users(:bill).id }
-    assert_redirected_to status_path(assigns(:status))
+    assert_response :error
     assert_equal assigns(:status).user_id, users(:tate).id
   end
 

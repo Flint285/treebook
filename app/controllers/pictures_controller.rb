@@ -2,6 +2,8 @@ class PicturesController < ApplicationController
   before_filter :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_filter :find_user
   before_filter :find_album
+  before_filter :find_picture, only: [:edit, :update, :show, :destroy]
+  before_filter :ensure_proper_user, only: [:edit, :new, :create, :update, :destroy]
   before_filter :add_breadcrumbs
   # GET /pictures
   # GET /pictures.json
@@ -29,7 +31,7 @@ class PicturesController < ApplicationController
   # GET /pictures/new
   # GET /pictures/new.json
   def new
-    @picture = Picture.new
+    @picture = @album.pictures.new
 
     respond_to do |format|
       format.html # new.html.erb
@@ -39,14 +41,13 @@ class PicturesController < ApplicationController
 
   # GET /pictures/1/edit
   def edit
-    @picture = Picture.find(params[:id])
+    
   end
 
   # POST /pictures
   # POST /pictures.json
   def create
     @picture = @album.pictures.new(params[:picture])
-    @picture.user = current_user
 
     respond_to do |format|
       if @picture.save
@@ -62,8 +63,6 @@ class PicturesController < ApplicationController
   # PUT /pictures/1
   # PUT /pictures/1.json
   def update
-    @picture = Picture.find(params[:id])
-
     respond_to do |format|
       if @picture.update_attributes(params[:picture])
         format.html { redirect_to album_pictures_path(@album), notice: 'Picture was successfully updated.' }
@@ -92,6 +91,13 @@ class PicturesController < ApplicationController
   end
 
   private
+  def ensure_proper_user
+    if current_user != @user
+      flash[:error] = "You don't have permission to do that."
+      redirect_to album_pictures_path
+    end  
+  end
+
   def add_breadcrumbs
     add_breadcrumb @user.first_name, profile_path(@user)
     add_breadcrumb "Albums", albums_path
@@ -103,11 +109,14 @@ class PicturesController < ApplicationController
   end
 
   def find_album
-    @album = @user.albums.find(params[:album_id])
+    if signed_in? && current_user.profile_name == params[:profile_name]
+      @album = current_user.albums.find(params[:album_id])
+    else
+      @album = @user.albums.find(params[:album_id])
+    end
   end
  
   def find_picture
-    @picture = @album.pictures.find(params[:pictures_id])
+    @picture = @album.pictures.find(params[:id])
   end
-
 end
