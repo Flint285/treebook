@@ -1,5 +1,5 @@
 Treebook::Application.routes.draw do
-
+  resources :activities, only: [:index]
 
   resources :skills
 

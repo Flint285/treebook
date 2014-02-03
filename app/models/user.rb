@@ -4,7 +4,6 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
                   :first_name, :last_name, :profile_name, :skill_ids, :avatar
@@ -20,7 +19,8 @@ class User < ActiveRecord::Base
                              with: /^[a-zA-Z0-9_-]+$/,
                              message: "must be formatted correctly."
                            } 
-                           
+  
+  has_many :activities                         
   has_many :albums
   has_many :pictures                         
   has_many :statuses
@@ -90,6 +90,14 @@ class User < ActiveRecord::Base
 
   def has_blocked?(other_user)
     blocked_friends.include?(other_user)
+  end
+
+  def create_activity(item, action)
+    activity = activities.new
+    activity.targetable = item
+    activity.action = action
+    activity.save
+    activity
   end
 
 end

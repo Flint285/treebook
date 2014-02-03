@@ -53,18 +53,17 @@ class StatusesController < ApplicationController
   end
 
   def new_computer
-    @status = current_user.statuses.new
-    if @status 
-    users = User.all
-      users.each do |user|
-        if user.skills.find_by_title( "Computer" )  
-          TestRun.help_request( id, user ).deliver
-        end
-      end
-    end
+    @status = current_user.statuses.new(params[:status])
+    
     respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @status }
+      if @status.save
+        current_user.computer_help(@status, 'created')
+        format.html { redirect_to @status, notice: 'Status was successfully created.' }
+        format.json { render json: @status, status: :created, location: @status }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @status.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -80,6 +79,7 @@ class StatusesController < ApplicationController
 
     respond_to do |format|
       if @status.save
+        current_user.create_activity(@status, 'created')
         format.html { redirect_to @status, notice: 'Status was successfully created.' }
         format.json { render json: @status, status: :created, location: @status }
       else
@@ -89,8 +89,6 @@ class StatusesController < ApplicationController
     end
   end
 
-  # PUT /statuses/1
-  # PUT /statuses/1.json
   def update
     @status = current_user.statuses.find(params[:id])
     @document = @status.document
@@ -98,7 +96,10 @@ class StatusesController < ApplicationController
     @status.transaction do
       @status.update_attributes(params[:status])
       @document.update_attributes(params[:status][:document]) if @document
-      raise ActiveRecord::Rollback unless @status.valid? && @document.try(:valid?) 
+      current_user.create_activity(@status, 'updated')
+      unless @status.valid? || (@status.valid? && @document && !@document.valid?)
+        raise ActiveRecord::Rollback
+      end  
     end
     
     respond_to do |format|

@@ -44,6 +44,7 @@ class AlbumsController < ApplicationController
 
     respond_to do |format|
       if @album.save
+        current_user.create_activity @album, 'created'
         format.html { redirect_to @album, notice: 'Album was successfully created.' }
         format.json { render json: @album, status: :created, location: @album }
       else
@@ -60,6 +61,7 @@ class AlbumsController < ApplicationController
 
     respond_to do |format|
       if @album.update_attributes(params[:album])
+        current_user.create_activity @album, 'updated'
         format.html { redirect_to album_pictures_path(@album), notice: 'Album was successfully updated.' }
         format.json { head :no_content }
       else
@@ -72,8 +74,8 @@ class AlbumsController < ApplicationController
   # DELETE /albums/1
   # DELETE /albums/1.json
   def destroy
-    @album = Album.find(params[:id])
     @album.destroy
+    current_user.create_activity @album, 'deleted'
 
     respond_to do |format|
       format.html { redirect_to albums_url }

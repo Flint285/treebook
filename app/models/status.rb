@@ -24,7 +24,7 @@ class Status < ActiveRecord::Base
     end
   end 
 
-  def computer_help
+  def computer_help(item, action)
       users = User.all
       users.each do |user|
         if user.skills.find_by_title( "Computer" )  

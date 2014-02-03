@@ -31,6 +31,8 @@ GEM
     arel (3.0.2)
     atomic (1.1.14)
     bcrypt-ruby (3.1.2-x86-mingw32)
+    bootstrap-will_paginate (0.0.10)
+      will_paginate
     builder (3.0.4)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -157,11 +159,13 @@ GEM
       multi_json (~> 1.0, >= 1.0.2)
     warden (1.2.3)
       rack (>= 1.0)
+    will_paginate (3.0.5)
 
 PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  bootstrap-will_paginate
   coffee-rails (~> 3.2.1)
   devise
   draper (~> 1.0)
@@ -180,3 +184,4 @@ DEPENDENCIES
   thin
   twitter-bootstrap-rails
   uglifier (>= 1.0.3)
+  will_paginate
