@@ -38,8 +38,8 @@
 
   <fieldset>
   <div>
-  <legend>Skill Set</legend>
-  <%= f.collection_select :skill_ids, Skill.find(:all, :order => 'title'), :id, :title, {}, :multiple => true %>
+ 
+  <%#= f.collection_select :skill_ids, Skill.find(:all, :order => 'title'), :id, :title, {}, :multiple => true %>
   </div>
 
 
@@ -52,14 +52,4 @@
 <% end %>
 </fieldset>
 
-<div> <h2>Skill Set<h2> </div>
 
-<%= @user.skills.each do |skill| %>
-   <hr>
-   <div></div><b><%= skill.title %></b><br/>
-   <%= skill.level %><br/>
-   <%= skill.rating %><br/>
-   <hr>    
-<% end %>
-
-<%= show_params %>

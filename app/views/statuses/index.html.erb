@@ -3,9 +3,9 @@
 </div>
 
 <%= link_to "Post a New Status", new_status_path, class: "btn btn-success" %>
-<%= link_to "Car Help", car_help_path, class: "btn btn-success" %>
-<%= link_to "Computer Help", computer_help_path, class: "btn btn-success" %>
-<%= link_to "Job Help", new_status_path, class: "btn btn-success" %>
+<%#= link_to "Car Help", car_help_path, class: "btn btn-success" %>
+<%#= link_to "Computer Help", computer_help_path, class: "btn btn-success" %>
+<%#= link_to "Job Help", new_status_path, class: "btn btn-success" %>
 
 <% @statuses.each do |status| %>
   <% if can_display_status?(status) %>

@@ -12,8 +12,8 @@
   <% end %>
 
   <div>
-  <b>Skill Set</b><br />
-  <%= f.collection_select :skill_ids, Skill.find(:all, :order => 'title'), :id, :title, {}, :multiple => true %>
+  
+  <%#= f.collection_select :skill_ids, Skill.find(:all, :order => 'title'), :id, :title, {}, :multiple => true %>
   </div>
   
   <%= f.input :content, input_html: { row: 4, class: 'input-xxlarge' } %>
