@@ -4,5 +4,5 @@ one:
 
 blocked_by_tate:
   user: tate
-  friend: block_friend
+  friend: blocked_friend
   state: 'blocked'

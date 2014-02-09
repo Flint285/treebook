@@ -21,14 +21,14 @@ class AlbumsControllerTest < ActionController::TestCase
   test "should create album" do
     sign_in users(:tate)
     assert_difference('Album.count') do
-      post :create, profile_name: @user.profile_name album: { title: @album.title }
+      post :create, profile_name: @user.profile_name, album: { title: @album.title }
     end
 
     assert_redirected_to album_path(assigns(:album))
   end
 
   test "should show album" do
-    get :show, id: @album
+    get :show, profile_name: @user.profile_name, id: @album
     assert_response :redirect
     assert_redirected_to album_pictures_path(@user.profile_name, @album.id) 
   end
@@ -36,7 +36,7 @@ class AlbumsControllerTest < ActionController::TestCase
   test "should create activity on album creation" do
     sign_in users(:tate)
     assert_difference('Activity.count') do
-      post :create, profile_name: @user.profile_name album: { title: @album.title }
+      post :create, profile_name: @user.profile_name, album: { title: @album.title }
     end
   end
 

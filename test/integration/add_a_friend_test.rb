@@ -2,13 +2,13 @@ require 'test_helper'
 
 class AddAFriendTest < ActionDispatch::IntegrationTest
   def sign_in_as(user, password)
-  	post login_path, user: { email: user.email, password: password}
+  	post login_path, user: { email: user.email, password: password }
   end
 
   test "that adding a friend works" do
   	sign_in_as users(:tate), "testing"
 
-  	get "/user_friendship/new?friend_id=#{users(:bill).profile_name}"
+  	get "/user_friendships/new?friend_id=#{users(:bill).profile_name}"
   	assert_response :success
 
   	assert_difference 'UserFriendship.count', 2 do

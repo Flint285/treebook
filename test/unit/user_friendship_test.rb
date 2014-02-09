@@ -17,7 +17,7 @@ class UserFriendshipTest < ActiveSupport::TestCase
 
   context "a new instance" do
     setup do
-      @user_friendship = UserFriendship.new user: user(:tate), friend: users(:mike)
+      @user_friendship = UserFriendship.new user: users(:tate), friend: users(:mike)
     end
 
     should "have a pending state" do
@@ -27,7 +27,7 @@ class UserFriendshipTest < ActiveSupport::TestCase
 
   context "#send_request_email" do
     setup do
-     @user_friendship = UserFriendship.create user: user(:tate), friend: users(:mike)
+     @user_friendship = UserFriendship.create user: users(:tate), friend: users(:mike)
     end
 
     should "send an email" do
@@ -70,17 +70,18 @@ class UserFriendshipTest < ActiveSupport::TestCase
     end
 
     should "set the state to accepted" do
-      @user_friendship.accepted!
+      @user_friendship.accept!
       assert_equal "accepted", @user_friendship.state
     end
 
     should "send an acceptance email" do
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
+        @user_friendship.accept!
       end
     end
 
     should "include the friend in the list of friends" do
-      @user_friendship.accepted!
+      @user_friendship.accept!
       users(:tate).friends.reload
       assert users(:tate).friends.include?(users(:mike))
     end 
@@ -94,13 +95,13 @@ class UserFriendshipTest < ActiveSupport::TestCase
   context ".request" do
     should "create two user friendships" do
       assert_difference 'UserFriendship.count', 2 do
-        UserFriendship.request(users(:tate), user(:mike))
+        UserFriendship.request(users(:tate), users(:mike))
       end
     end
 
     should "send a friend requested email" do
       assert_difference 'ActionMailer::Base.deliveries.size', 1 do
-        UserFriendship.request(users(:tate), user(:mike))
+        UserFriendship.request(users(:tate), users(:mike))
       end
     end    
   end
